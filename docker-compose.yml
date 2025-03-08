@@ -8,6 +8,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /downloads:/downloads
+      - /mnt/Pool1/Network_Drive/downloads:/downloads
       - ./logs:/logs
     restart: unless-stopped
