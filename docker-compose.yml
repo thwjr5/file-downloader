@@ -1,0 +1,13 @@
+# file-downloader/docker-compose.yml
+version: '3'
+
+services:
+  file-downloader:
+    build: .
+    container_name: file-downloader
+    ports:
+      - "3000:3000"
+    volumes:
+      - /downloads:/downloads
+      - ./logs:/logs
+    restart: unless-stopped
