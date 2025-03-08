@@ -10,4 +10,9 @@ services:
     volumes:
       - /mnt/Pool1/Network_Drive/downloads:/downloads
       - ./logs:/logs
+    environment:
+      - PUID=900
+      - PGID=900
+      - TZ=Etc/UTC
+    user: "900:900"
     restart: unless-stopped

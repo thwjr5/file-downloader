@@ -53,9 +53,15 @@ app.post('/download', async (req, res) => {
   }
 
   // Validate destination path to prevent directory traversal attacks
-  const normalizedPath = path.normalize(destination);
+  // Allow paths to start with /downloads to ensure files go to the mounted volume
+  let normalizedPath = path.normalize(destination);
   if (normalizedPath.includes('..')) {
     return res.status(400).json({ error: 'Invalid destination path' });
+  }
+  
+  // If path doesn't start with /downloads, prepend it
+  if (!normalizedPath.startsWith('/downloads/') && !normalizedPath.startsWith('/downloads')) {
+    normalizedPath = path.join('/downloads', normalizedPath);
   }
 
   try {
@@ -124,10 +130,16 @@ app.post('/batch-download', async (req, res) => {
     }
 
     // Validate destination path
-    const normalizedPath = path.normalize(destination);
+    // Allow paths to start with /downloads to ensure files go to the mounted volume
+    let normalizedPath = path.normalize(destination);
     if (normalizedPath.includes('..')) {
       errors.push({ url, destination, error: 'Invalid destination path' });
       continue;
+    }
+    
+    // If path doesn't start with /downloads, prepend it
+    if (!normalizedPath.startsWith('/downloads/') && !normalizedPath.startsWith('/downloads')) {
+      normalizedPath = path.join('/downloads', normalizedPath);
     }
 
     try {
